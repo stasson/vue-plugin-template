@@ -10,20 +10,20 @@ import autoprefixer from 'autoprefixer'
 import postcss from 'postcss'
 import csso from 'postcss-csso';
 import { minify } from 'uglify-es'
-import uppercamelcase from 'uppercamelcase'
 
 const isProduction = process.env.NODE_ENV === `production`
 const isDevelopment = process.env.NODE_ENV === `development`
 
-const umdName = uppercamelcase('{{ name }}') + 'Plugin'
+const distName = '{{ kebabcase name }}'
+const umdName = '{{ camelcase name }}Plugin'
 
 const libPath = (isDevelopment 
-      ? 'dist/index.js' 
-      : 'dist/index.min.js')
+      ? `dist/${distName}.js` 
+      : `dist/${distName}.min.js`)
   
 const cssPath = (isDevelopment 
-      ? 'dist/index.css' 
-      : 'dist/index.min.css')
+      ? `dist/${distName}.css` 
+      : `dist/${distName}.min.css`)
 
 const sassConfig = {
   include: [ '**/*.css', '**/*.scss' ],
