@@ -11,22 +11,19 @@ import postcss from 'postcss'
 import csso from 'postcss-csso';
 import { minify } from 'uglify-es'
 import uppercamelcase from 'uppercamelcase'
-import decamelize from 'decamelize'
 
 const isProduction = process.env.NODE_ENV === `production`
 const isDevelopment = process.env.NODE_ENV === `development`
 
-const libraryName = uppercamelcase('{{ name }}')
-const distName = decamelize(libraryName, '-')
-const umdName = libraryName + 'Plugin'
+const umdName = uppercamelcase('{{ name }}') + 'Plugin'
 
 const libPath = (isDevelopment 
-      ? 'dist/'+ distName + '.js' 
-      : 'dist/'+ distName + '.min.js')
+      ? 'dist/index.js' 
+      : 'dist/index.min.js')
   
 const cssPath = (isDevelopment 
-      ? 'dist/'+ distName + '.css' 
-      : 'dist/'+ distName + '.min.css')
+      ? 'dist/index.css' 
+      : 'dist/index.min.css')
 
 const sassConfig = {
   include: [ '**/*.css', '**/*.scss' ],
@@ -59,7 +56,7 @@ const config = {
     format: 'umd',
     name: umdName
   },
-  external: ['vue'],
+  external: ['vue', 'vue-router', 'vuex'],
   plugins: [
     eslint({ include: [ '**/*.js', '**/*.vue' ] }),
     vue (),

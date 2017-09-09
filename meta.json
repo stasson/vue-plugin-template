@@ -23,5 +23,5 @@
     }
   },
   "skipInterpolation": "components/**/*.vue",
-  "completeMessage": "{{#inPlace}}To get started:\n\n  npm install\n  npm run dev.{{else}}To get started:\n\n  cd {{destDirName}}\n  npm install\n  npm run dev.{{/inPlace}}"
+  "completeMessage": "{{#inPlace}}To get started:\n\n  npm install\n  npm run build.{{else}}To get started:\n\n  cd {{destDirName}}\n  npm install\n  npm run build.{{/inPlace}}"
 }

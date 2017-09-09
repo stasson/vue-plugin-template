@@ -8,6 +8,12 @@
   "keywords": [
     "vue plugin"
   ],
+  "files": [
+    "dist",
+    "components",
+    "LICENSE",
+    "README.md"
+  ],
   "main": "dist/index.js",
   "module": "components/index.js",
   "scripts": {
