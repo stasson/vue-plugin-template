@@ -1,7 +1,7 @@
 //
 // vue PlugIn
 //
-import MyComponent from "./my-component.vue"
+import MyComponent from './my-component.vue'
 
 const plugin = {
   install (vm) {

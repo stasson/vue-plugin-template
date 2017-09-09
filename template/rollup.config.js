@@ -2,7 +2,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import vue from 'rollup-plugin-vue2'
-// import eslint from 'rollup-plugin-eslint'
+import eslint from 'rollup-plugin-eslint'
 import uglify from 'rollup-plugin-uglify'
 import sass from 'rollup-plugin-sass';
 import filesize from 'rollup-plugin-filesize'
@@ -18,6 +18,7 @@ const isDevelopment = process.env.NODE_ENV === `development`
 
 const libraryName = uppercamelcase('{{ name }}')
 const distName = decamelize(libraryName, '-')
+const umdName = libraryName + 'Plugin'
 
 const libPath = (isDevelopment 
       ? 'dist/'+ distName + '.js' 
@@ -27,47 +28,54 @@ const cssPath = (isDevelopment
       ? 'dist/'+ distName + '.css' 
       : 'dist/'+ distName + '.min.css')
 
+const sassConfig = {
+  include: [ '**/*.css', '**/*.scss' ],
+  options: {includePaths: ['node_modules']},
+  output: cssPath,
+  processor: css => postcss((isDevelopment
+                      ? [autoprefixer()]
+                      : [autoprefixer(), csso()]))
+                    .process(css)
+                    .then(result => result.css)
+}
+
+const babelConfig = {
+  presets: [ 
+    [
+      'es2015', 
+      {modules: false} 
+    ]
+  ],
+  babelrc: false,
+  plugins: [
+    'external-helpers'
+  ]
+}
+
 const config = {
   input: 'libentry.js',
   output: {
     file: libPath,
     format: 'umd',
-    name: 'Vue'
+    name: umdName
   },
   external: ['vue'],
   plugins: [
+    eslint({ include: [ '**/*.js', '**/*.vue' ] }),
     vue (),
     resolve({ jsnext: true, main: true, browser: true }),
-    // eslint(),
-    sass({
-      include: [ '**/*.css', '**/*.scss' ],
-      options: {includePaths: ['node_modules']},
-      output: cssPath,
-      processor: css => postcss((isDevelopment
-                          ? [autoprefixer()]
-                          : [autoprefixer(), csso()]))
-                        .process(css)
-                        .then(result => result.css)
-    }),
+    sass(sassConfig),
     commonjs (),
-    ... ( isProduction
-          ? [ uglify({}, minify), filesize() ] 
-          : [] ),
-    babel({
-      presets: [ 
-        [
-          'es2015', 
-          {modules: false} 
-        ]
-      ],
-      babelrc: false,
-      plugins: [
-        'external-helpers'
-      ]
-    }),
+    babel(babelConfig),
   ],
   sourcemap: isDevelopment
 }
+
+if (isProduction) {
+  config.plugins.push(uglify({}, minify))
+  config.plugins.push(filesize())
+}
+
 
 if (isDevelopment) {
   // config.plugins.push(livereload())
