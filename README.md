@@ -1,10 +1,10 @@
 # vue-plugin-template
 
-vue-cli template to rollup a vue plugin.
-
-based on rollup with for:
-- es2015 with babel + eslint:recommended + uglifyjs minification
-- supports css and sass + autoprefixer + csso 
+vue-cli template to rollup a vue plugin with support for
+- es2015 (babel or buble)
+- eslint:recommended 
+- css/sass + autoprefixer 
+- uglifyjs/csso  minification 
 
 ### Usage
 
@@ -20,15 +20,15 @@ $ npm run build
 
 #### Transpile ES6?
 
-* [babel](https://babeljs.io/): Full featured, battle tested transpiler.
-* [buble](https://buble.surge.sh/guide/): Fast, use it if you want a clean output with no extra code
+* __[babel](https://babeljs.io/)__: Full featured, battle tested transpiler.
+* __[buble](https://buble.surge.sh/guide/)__: Fast, use it if you want a clean output with no extra code
 * __none__: you don't need ES6 support !?!
 
 #### CSS output?
 
-* extract: styles are consolidated in a stylesheet file (my-project.css / my-project.min.css)
-* inject: <style> elements are injected into the <head>
-* none: you don't use no styles !?!
+* __extract__: styles are consolidated in a stylesheet file (my-project.css / my-project.min.css)
+* __inject__: <style> elements are injected into the <head>
+* __none__: you don't use no styles !?!
 
 #### Layout
 
