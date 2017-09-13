@@ -1,5 +1,6 @@
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
+import buble from 'rollup-plugin-buble'
 import commonjs from 'rollup-plugin-commonjs'
 import vue from 'rollup-plugin-vue2'
 import eslint from 'rollup-plugin-eslint'
@@ -11,24 +12,30 @@ import postcss from 'postcss'
 import csso from 'postcss-csso';
 import { minify } from 'uglify-es'
 
+const options = {
+  distName: '{{ kebabcase name }}',
+  umdName: '{{ camelcase name }}Plugin',
+  transpiler: '{{transpiler}}',
+  styles: '{{styles}}',
+  external: ['vue']
+}
+
+
 const isProduction = process.env.NODE_ENV === `production`
+
 const isDevelopment = process.env.NODE_ENV === `development`
 
-const distName = '{{ kebabcase name }}'
-const umdName = '{{ camelcase name }}Plugin'
-
 const libPath = (isDevelopment 
-      ? `dist/${distName}.js` 
-      : `dist/${distName}.min.js`)
+      ? `dist/${options.distName}.js` 
+      : `dist/${options.distName}.min.js`)
   
 const cssPath = (isDevelopment 
-      ? `dist/${distName}.css` 
-      : `dist/${distName}.min.css`)
+      ? `dist/${options.distName}.css` 
+      : `dist/${options.distName}.min.css`)
 
 const sassConfig = {
   include: [ '**/*.css', '**/*.scss' ],
   options: {includePaths: ['node_modules']},
-  output: cssPath,
   processor: css => postcss((isDevelopment
                       ? [autoprefixer()]
                       : [autoprefixer(), csso()]))
@@ -36,43 +43,52 @@ const sassConfig = {
                     .then(result => result.css)
 }
 
-const babelConfig = {
-  presets: [ 
-    [
-      'es2015', 
-      {modules: false} 
-    ]
-  ],
-  babelrc: false,
-  plugins: [
-    'external-helpers'
-  ]
+switch (options.styles) {
+  case 'extract':
+    sassConfig.output = cssPath
+    break
+  case 'inject':
+    sassConfig.insert = true
+    break
 }
+
 
 const config = {
   input: 'libentry.js',
   output: {
     file: libPath,
     format: 'umd',
-    name: umdName
+    name: options.umdName
   },
-  external: ['vue', 'vue-router', 'vuex'],
+  external: options.external,
   plugins: [
     eslint({ include: [ '**/*.js', '**/*.vue' ] }),
     vue (),
     resolve({ jsnext: true, main: true, browser: true }),
     sass(sassConfig),
     commonjs (),
-    babel(babelConfig),
   ],
   sourcemap: isDevelopment
 }
+
+switch (options.transpiler){
+  case 'babel' :
+    config.plugins.push(babel())
+    break;
+  case 'buble' :
+    config.plugins.push(buble)
+    break;
+  case 'none':
+  default:
+    break
+}
+
+
 
 if (isProduction) {
   config.plugins.push(uglify({}, minify))
   config.plugins.push(filesize())
 }
-
 
 if (isDevelopment) {
   // config.plugins.push(livereload())

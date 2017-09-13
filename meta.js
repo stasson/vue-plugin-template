@@ -20,6 +20,24 @@ module.exports = {
       'required': true,
       'label': 'Project version',
       'default': '0.0.1'
+    },
+    transpiler: {
+      "type": "list",
+      "message": "Transpile ES6?",
+      "choices": [
+        "babel", 
+        "buble",
+        "none"
+        ]
+    },
+    styles: {
+      "type": "list",
+      "message": "CSS output?",
+      "choices": [
+        "extract", 
+        "inject",
+        "none"
+        ]
     }
   },
   skipInterpolation: 'components/**/*.vue',

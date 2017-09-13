@@ -1,0 +1,15 @@
+{
+  "presets": [ 
+    [
+      // es2015 preset
+      "es2015", 
+      // let rollup take care of modules 
+      { "modules": false } 
+    ]
+  ],
+  "plugins": [
+    // let rollup bundle helpers once
+    // see https://github.com/rollup/rollup-plugin-babel#helpers
+    "external-helpers"  
+  ]
+}

@@ -10,7 +10,7 @@
   ],
   "files": [
     "dist",
-    "components",
+    "src",
     "LICENSE",
     "README.md"
   ],

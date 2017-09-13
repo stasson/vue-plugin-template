@@ -20,6 +20,7 @@ Vue.use({{camelcase name}}Plugin)
 
 ```html
 <head>
+    <link rel="stylesheet" href="https://unpkg.com/{{kebabcase name}}/dist/{{kebabcase name}}.min.css">  
     <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
     <script src="https://unpkg.com/{{kebabcase name}}/dist/{{kebabcase name}}.min.js"></script>
 </head>
