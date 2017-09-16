@@ -43,15 +43,11 @@ const sassConfig = {
                     .then(result => result.css)
 }
 
-switch (options.styles) {
-  case 'extract':
-    sassConfig.output = cssPath
-    break
-  case 'inject':
-    sassConfig.insert = true
-    break
+if (isProduction && options.styles == 'extract') {
+  sassConfig.output = cssPath
+} else {
+  sassConfig.insert = true
 }
-
 
 const config = {
   input: 'libentry.js',
@@ -68,7 +64,7 @@ const config = {
     sass(sassConfig),
     commonjs (),
   ],
-  sourcemap: isDevelopment
+  sourcemap: isDevelopment ? 'inline' : true
 }
 
 switch (options.transpiler){
