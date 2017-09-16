@@ -78,8 +78,6 @@ switch (options.transpiler){
     break
 }
 
-
-
 if (isProduction) {
   config.plugins.push(uglify({}, minify))
   config.plugins.push(filesize())

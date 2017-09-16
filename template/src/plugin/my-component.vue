@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style scoped lang=css>
+<style lang=css>
 p {
  font-size: 2em;
  text-align: center;
