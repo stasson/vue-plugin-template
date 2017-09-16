@@ -12,26 +12,12 @@ This is a project template for [vue-cli](https://github.com/vuejs/vue-cli).
 
 ``` bash
 $ npm install -g vue-cli
-$ vue init stasson/vue-plugin-rollup my-project
+$ vue init stasson/vue-plugin-template my-project
 $ cd my-project
 $ npm install
-$ npm run build
 ```
 
-#### Transpile ES6?
-
-* __[babel](https://babeljs.io/)__: Full featured, battle tested transpiler.
-* __[buble](https://buble.surge.sh/guide/)__: Fast, use it if you want a clean output with no extra code
-* __none__: you don't need ES6 support !?!
-
-#### CSS output?
-
-* __extract__: styles are consolidated in a stylesheet file (my-project.css / my-project.min.css)
-* __inject__: <style> elements are injected into the <head>
-* __none__: you don't use no styles !?!
-
-#### Layout
-
+the template layout is as follow
 ```
 my-prolect
 ├─ dist         # distribution output 
@@ -39,12 +25,32 @@ my-prolect
 └─ src/styles   # css/scss extra files 
 ```
 
-#### What's Included
 - `npm run build`: build all 
-- `npm run build:dev`: build umd distribution with sourcemap.
+- `npm run build:dev`: build umd distribution with inlined sourcemap and styles.
 - `npm run build:prod`: build minified & optimized umd distribution.
 
 > if you publish on npm, the distribution will be available on [unpkg](https://unpkg.com) CDN  
+
+
+
+#### Transpile ES6?
+
+Choose which es6 transpiler to use
+
+* __[babel](https://babeljs.io/)__: Full featured, battle tested transpiler.
+* __[buble](https://buble.surge.sh/guide/)__: Fast, use it if you want a clean output with no extra code
+* __none__: you don't need ES6 support !?!
+
+
+#### CSS output?
+
+Choose how styles should be handled
+
+* __extract__: styles are consolidated in a stylesheet file (my-project.css / my-project.min.css)
+* __inject__: <style> elements are injected into the <head>
+* __none__: you don't use no styles !?!
+
+> development distribution always use inlined styles  
 
 ### TODO
 
