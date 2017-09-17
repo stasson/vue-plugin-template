@@ -2,10 +2,11 @@ import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import buble from 'rollup-plugin-buble'
 import commonjs from 'rollup-plugin-commonjs'
-import vue from 'rollup-plugin-vue2'
+import vue from 'rollup-plugin-vue'
 import eslint from 'rollup-plugin-eslint'
 import uglify from 'rollup-plugin-uglify'
 import sass from 'rollup-plugin-sass';
+import replace from 'rollup-plugin-replace'
 import filesize from 'rollup-plugin-filesize'
 import autoprefixer from 'autoprefixer'
 import postcss from 'postcss'
@@ -57,11 +58,14 @@ const config = {
   },
   external: options.external,
   plugins: [
+    replace({
+        'process.env.NODE_ENV': JSON.stringify( process.env.NODE_ENV )
+    }),
     eslint({ include: [ '**/*.js', '**/*.vue' ] }),
-    vue (),
+    vue({ autoStyles: false, styleToImports: true }),
     resolve({ jsnext: true, main: true, browser: true }),
     sass(sassConfig),
-    commonjs (),
+    commonjs ()
   ],
   sourcemap: isDevelopment ? 'inline' : true
 }
@@ -79,6 +83,9 @@ switch (options.transpiler){
 }
 
 if (isProduction) {
+  config.plugins.push(replace({
+    'process.env.NODE_ENV': JSON.stringify( 'production' )
+  }))
   config.plugins.push(uglify({}, minify))
   config.plugins.push(filesize())
 }

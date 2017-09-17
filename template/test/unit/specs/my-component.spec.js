@@ -1,27 +1,26 @@
-import Vue from 'vue'
+import {check, mount} from './utils.js'
 import MyComponent from 'my-component.vue'
 
 
-describe('MyComponent', function () {
-  it ('data should be a function', function () {
-      MyComponent.data.should.be.a('function')
+describe('MyComponent', () => {
+
+  check(MyComponent)
+
+  describe ('mount', function () {
+    let vm = mount(MyComponent)
+
+    it('renders the right content', function () {
+      return vm.$nextTick().then( function () {
+            let text = vm.$el.textContent
+            text.should.equal('Hello World !')
+      })
+    })
+
+    it('renders the right style', function () {
+      return vm.$nextTick().then( function () {
+        vm.$el.classList.contains('my-style').should.be.true
+      })
+    })
+
   })
-  
-  // Mount an instance and inspect the render output
-  it('renders the correct message', () => {
-    const Ctor = Vue.extend(MyComponent)
-    const vm = new Ctor().$mount()
-    (vm.$el.textContent).should.be('Hello World !')
-  })  
-}) 
-
-
-
-// describe('Test', function() {
-//   it('should be successfull', function() {
-//     const foo = 'bar'
-//     foo.should.be.a('string');
-//     foo.should.equal('bar');
-//     foo.should.have.lengthOf(3);    });
-// });
-
+})

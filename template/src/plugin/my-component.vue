@@ -1,5 +1,5 @@
 <template>
-  <p>{{greetings}} World !</p>
+  <p class="my-style">{{greetings}} World !</p>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang=css>
-p {
+.my-style {
  font-size: 2em;
  text-align: center;
 }

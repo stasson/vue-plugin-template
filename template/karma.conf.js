@@ -2,18 +2,17 @@ const resolve = require('rollup-plugin-node-resolve')
 const babel =  require('rollup-plugin-babel')
 const buble = require('rollup-plugin-buble')
 const commonjs = require('rollup-plugin-commonjs')
-const vue = require('rollup-plugin-vue2')
+const vue = require('rollup-plugin-vue')
 const eslint = require('rollup-plugin-eslint')
-const uglify = require('rollup-plugin-uglify')
+const replace = require('rollup-plugin-replace')
 const sass = require('rollup-plugin-sass')
 const autoprefixer = require('autoprefixer')
 const postcss = require('postcss')
 const includepaths = require('rollup-plugin-includepaths')
 
 const options = {
-  name: '{{ camelcase name }}Plugin',
+  name: '{{ camelcase name }}PluginTest',
   transpiler: '{{transpiler}}',
-  external: ['vue']
 }
 
 
@@ -28,19 +27,22 @@ const sassConfig = {
 
 const rollupConfig = {
   plugins: [
+    replace({
+        'process.env.NODE_ENV': JSON.stringify( 'production' )
+    }),
     includepaths({
       paths: ['src/plugin'],
       extensions: ['.js', '.vue']
     }),
     eslint({ include: [ 'src/**/*.js', 'src/**/*.vue' ] }),
-    vue (),
+    vue({ autoStyles: false, styleToImports: true }),
     resolve({ jsnext: true, main: true, browser: true }),
     sass(sassConfig),
     commonjs (),
 	],
-	format: 'iife',         // Helps prevent naming collisions.
+	format: 'umd',          // Helps prevent naming collisions.
 	name: options.name,     // Required for 'iife' format.
-	sourcemap: 'inline'     // Sensible for testing.
+	sourcemap: 'inline',    // Sensible for testing.
 }
 
 switch (options.transpiler){
@@ -63,20 +65,15 @@ module.exports = function (config) {
 		  { pattern: 'test/unit/**/*.spec.js', watched: false }
 		],
 		frameworks: ['mocha', 'chai', 'phantomjs-shim'],
-		reporters: ['progress', 'mocha', 'coverage'],
+		reporters: ['mocha'],
 		preprocessors: {
-			'src/**/*.(js|vue)': ['coverage'],
-			'test/unit/**/*.spec.js': ['rollup']
+			'test/**/*.js': ['rollup'],
 		},
 		rollupPreprocessor: rollupConfig,
-		coverageReporter: {
-      dir : 'coverage/',
-      reporters: [
-        { type: 'text-summary', subdir: '.', file: 'summary.txt' },
-      ]
-    },
-		// browsers: ['Chrome', 'PhantomJS'],
-		browsers: ['PhantomJS'],
+		browsers: process.env.C9_IP ? ['PhantomJS']
+		  : process.env.CI ? ['PhantomJS']
+		  : ['PhantomJS', 'Chrome'],
+		singleRun: process.env.CI,
     hostname: process.env.IP,
     port: process.env.PORT,
     runnerPort: 0

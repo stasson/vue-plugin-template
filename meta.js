@@ -40,7 +40,7 @@ module.exports = {
         ]
     }
   },
-  skipInterpolation: 'components/**/*.vue',
+  skipInterpolation: '**/*.vue',
   helpers: {
     camelcase: (s) => {
       return s.replace (/(?:^|[-])(\w)/g, (_,c) => {
