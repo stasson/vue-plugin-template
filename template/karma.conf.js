@@ -50,7 +50,7 @@ switch (options.transpiler){
     rollupConfig.plugins.push(babel())
     break;
   case 'buble' :
-    rollupConfig.plugins.push(buble)
+    rollupConfig.plugins.push(buble())
     break;
   case 'none':
   default:

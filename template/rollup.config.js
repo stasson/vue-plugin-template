@@ -75,7 +75,7 @@ switch (options.transpiler){
     config.plugins.push(babel())
     break;
   case 'buble' :
-    config.plugins.push(buble)
+    config.plugins.push(buble())
     break;
   case 'none':
   default:
