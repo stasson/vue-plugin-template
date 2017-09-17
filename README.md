@@ -21,10 +21,15 @@ the template layout is as follow
 ```
 my-prolect
 ├─ dist         # distribution output 
-├─ src/plugins  # vue plugin sources (components, directives ...)  
-└─ src/styles   # css/scss extra files 
+├─ src          #  
+│  ├─ plugin    # plugin sources (components, directives ...)
+│  └─ styles    # styles (.css/.scss) 
+└─ test
+   └─ unit
+      └─ specs  # unit test spec
 ```
 
+- `npm run test`: run karma tests  
 - `npm run build`: build all 
 - `npm run build:dev`: build umd distribution with inlined sourcemap and styles.
 - `npm run build:prod`: build minified & optimized umd distribution.
@@ -55,4 +60,3 @@ Choose how styles should be handled
 ### TODO
 
 - add support for vue scope 
-- add npm run test
